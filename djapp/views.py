@@ -59,9 +59,9 @@ def signin(request):
             else:
                 return JsonResponse({"status":200,"message":"User already logged in!"})
         else:
-            return JsonResponse({"status":400,"status":"Invalid Login!"})
+            return JsonResponse({"status":400,"message":"Invalid Login!"})
     except Exception as e:
-        return JsonResponse({"400":"Invalid Login!"})
+        return JsonResponse({"status":500,"message":"Something went wrong!"})
 
 @csrf_exempt   
 def signout(request):
@@ -96,7 +96,7 @@ class QuestionView(APIView):
     def delete(self,request,qid):
         try:
             Question.objects.filter(id=qid).delete()
-            return Response({"Message":"Question Deleted!"})
+            return Response({"status":200,"Message":"Question Deleted!"})
         except Exception as e:
             return JsonResponse({"status":500,"Message":"Something Went wrong Please try again!"})
     
@@ -104,7 +104,7 @@ class QuestionView(APIView):
         try:
             description = request.POST["question"]
             Question.objects.filter(id=qid).update(description=description)
-            return Response({"Message":"Question Edited!"})
+            return Response({"status":200,"Message":"Question Edited!"})
         except Exception as e:
             return JsonResponse({"status":500,"Message":"Something Went wrong Please try again!"})
 
@@ -134,14 +134,14 @@ class AnswerView(APIView):
         description = request.POST["answer"]
         try:
             Answer.objects.filter(id=aid).update(description=description)
-            return Response({"Message":"Answer Edited!"})
+            return Response({"status":200,"Message":"Answer Edited!"})
         except Exception as e:
             return JsonResponse({"status":500,"Message":"Something Went wrong Please try again!"})
 
     def delete(self,request,aid):
         try:
             Answer.objects.filter(id=aid).delete()
-            return Response({"Message":"Answer Deleted!"})
+            return Response({"status":200,"Message":"Answer Deleted!"})
         except Exception as e:
             return JsonResponse({"status":500,"Message":"Something Went wrong Please try again!"})
 
@@ -194,7 +194,7 @@ class AnswerVoteView(APIView):
         user = request.user
         try:
             Answervote.objects.filter(answer__id=aid,voted_by=user).delete()
-            return Response({"Message":"Vote Deleted!"})
+            return Response({"status":200,"Message":"Vote Deleted!"})
         except Exception as e:
             return JsonResponse({"status":500,"Message":"Something Went wrong Please try again!"})
 
